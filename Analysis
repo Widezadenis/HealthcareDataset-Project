@@ -1,0 +1,60 @@
+#Runs a query to check patients length of stay and the total charges accumulated.
+SELECT Name, Date_of_Admission, Discharge_Date,
+DATEDIFF(HOUR, Date_of_Admission, Discharge_Date) AS lengthOfStay,
+SUM(Billing_Amount) AS totalCharged
+FROM dbo.healthcare_dataset
+GROUP BY Name, Date_of_Admission, Discharge_Date
+ORDER BY lengthOfStay DESC;
+
+#Runs a query a query to check the distribution of ages in the dataset
+SELECT Age, COUNT(*) AS Number
+FROM dbo.healthcare_dataset
+GROUP BY Age
+ORDER BY Age;
+
+#Runs a query to count of male and female admissions
+SELECT Gender, COUNT(Gender) as GenderAdmitted
+FROM dbo.healthcare_dataset
+GROUP BY Gender;
+
+#Runs a query to check the total count of blood types
+SELECT Blood_Type, COUNT(*) as BloodTypes
+FROM dbo.healthcare_dataset
+GROUP BY Blood_Type;
+
+#Runs a query to check patient blood types by gender
+SELECT Blood_Type, Gender, COUNT(*) as BloodTypeByGender
+FROM dbo.healthcare_dataset
+GROUP BY Blood_Type, Gender
+ORDER BY Gender;
+
+#Runs a query to get a count of the different medical conditions 
+SELECT Medical_Condition, COUNT(*) as MedicalConditions
+FROM dbo.healthcare_dataset
+GROUP BY Medical_Condition;
+
+#Runs a query to check patient length of stay based on their medical conditions and admission type
+SELECT Medical_Condition, Admission_Type,
+DATEDIFF(day, Date_of_Admission, Discharge_Date) AS TotalStay,
+SUM(Billing_Amount) AS totalCharged
+FROM dbo.healthcare_dataset
+GROUP BY Medical_Condition, Admission_Type, Date_of_Admission, Discharge_Date
+ORDER BY TotalStay DESC;
+
+#Checks patients hospital stay based on their admission type 
+SELECT Admission_Type, Test_Results, Medical_Condition,
+DATEDIFF(day, Date_of_Admission, Discharge_Date) AS TotalStay
+FROM dbo.healthcare_dataset
+WHERE Admission_Type = 'Emergency';
+
+SELECT Admission_Type, Test_Results, Medical_Condition,
+DATEDIFF(day, Date_of_Admission, Discharge_Date) AS TotalStay
+FROM dbo.healthcare_dataset
+WHERE Admission_Type = 'Urgent';
+
+SELECT Admission_Type, Test_Results, Medical_Condition, 
+DATEDIFF(day, Date_of_Admission, Discharge_Date) AS TotalStay
+FROM dbo.healthcare_dataset
+WHERE Admission_Type = 'Elective';
+
+
